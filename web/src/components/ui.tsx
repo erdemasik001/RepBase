@@ -11,9 +11,9 @@ const BUTTON_VARIANTS = {
 }
 
 const BUTTON_SIZES = {
-  sm: 'h-9 px-5 text-sm',
-  md: 'h-11 px-7 text-sm',
-  lg: 'h-14 px-10 text-base',
+  sm: 'h-9 rounded-lg px-5 text-sm',
+  md: 'h-11 rounded-xl px-7 text-sm',
+  lg: 'h-14 rounded-2xl px-10 text-base',
 }
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

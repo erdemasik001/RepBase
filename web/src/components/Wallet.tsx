@@ -130,7 +130,7 @@ export function WalletModal({ onClose }: { onClose: () => void }) {
                   type="button"
                   disabled={active || pendingUid !== null}
                   onClick={() => connect(option)}
-                  className="flex w-full items-center justify-between gap-3 border border-line px-4 py-3.5 text-left transition-colors hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-line px-4 py-3.5 text-left transition-colors hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <span className="font-medium">{option.label}</span>
                   <span className="font-mono text-xs text-fog">

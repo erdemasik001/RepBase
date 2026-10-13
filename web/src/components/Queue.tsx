@@ -60,7 +60,7 @@ export function Queue({ agents, tasks, me, onDeliver }: QueueProps) {
       title="Your queue"
       aside={
         actionable > 0 && (
-          <span className="bg-chrome px-2 py-0.5 font-mono text-xs font-medium text-ink-950">{actionable}</span>
+          <span className="rounded-md bg-chrome px-2 py-0.5 font-mono text-xs font-medium text-ink-950">{actionable}</span>
         )
       }
     >
