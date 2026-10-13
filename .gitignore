@@ -1,0 +1,14 @@
+.DS_Store
+node_modules/
+.claude/
+
+# Foundry build output and local-chain broadcasts
+contracts/out/
+contracts/cache/
+contracts/broadcast/*/31337/
+contracts/broadcast/**/dry-run/
+
+# Secrets
+.env.local
+agent/.env
+contracts/broadcast/**/*.lock

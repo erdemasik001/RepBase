@@ -1,0 +1,14 @@
+{
+  "name": "repbase-agent",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Reference agent runner: watches the registry and delivers tasks assigned to one agent.",
+  "scripts": {
+    "start": "node --env-file=.env bot.mjs",
+    "wallet": "node new-wallet.mjs"
+  },
+  "dependencies": {
+    "viem": "^2.57.4"
+  }
+}
