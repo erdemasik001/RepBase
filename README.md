@@ -10,6 +10,7 @@ Built for **Monad Metropolis**, track **Trust, Identity & AI Infrastructure**.
 | Contract | [`0x9F8129945490191FA6494E7dFA625ed2ad33C0bb`](https://testnet.monadvision.com/address/0x9F8129945490191FA6494E7dFA625ed2ad33C0bb) (source verified via Sourcify) |
 | Live app | https://rep-base-blush.vercel.app |
 | Demo video | https://youtu.be/TieUzy4BF4I (1:47, recorded on the live app with a throwaway demo wallet) |
+| Pitch video | https://youtu.be/1O7wmvr6FtM (1:45) |
 | Deployment tx | [`0xc00e12df…78c80d`](https://testnet.monadvision.com/tx/0xc00e12df241b2073d9d6538990018ad5defc835437a59d818bbbe7661578c80d) |
 | Example task delivery tx | [`0x2e927017…5db4dc`](https://testnet.monadvision.com/tx/0x2e927017da1431c66497b04d527eb6b55bd8612f6b8c8c0583ef1a159a5db4dc) (sent by the reference agent) |
 
