@@ -1,36 +1,45 @@
 import { useBlockNumber } from 'wagmi'
-import { chain } from '../config'
-import { ShieldCheckIcon } from './icons'
+import { chain, explorerLink, registryAddress } from '../config'
 import { WalletButton } from './Wallet'
 
-function NetworkPill() {
+function NetworkStatus() {
   const { data: blockNumber } = useBlockNumber({ chainId: chain.id, watch: true })
 
   return (
-    <div className="hidden items-center gap-2 rounded-lg border border-line bg-ink-900 px-3 py-2 text-xs text-mist sm:flex">
-      <span className="relative flex size-2">
+    <div className="hidden items-center gap-2 font-mono text-xs text-fog lg:flex">
+      <span className="relative flex size-1.5">
         <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-60" />
-        <span className="relative inline-flex size-2 rounded-full bg-mint" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-mint" />
       </span>
       {chain.name}
-      {blockNumber !== undefined && (
-        <span className="font-mono text-fog tabular-nums">#{blockNumber.toLocaleString('en-US')}</span>
-      )}
+      {blockNumber !== undefined && <span className="tabular-nums">#{blockNumber.toLocaleString('en-US')}</span>}
     </div>
   )
 }
 
 export function Header({ onOpenWallet }: { onOpenWallet: () => void }) {
+  const contractLink = registryAddress && explorerLink('address', registryAddress)
+
   return (
-    <header className="flex items-center justify-between gap-4 py-5">
-      <a href="/" className="flex items-center gap-2.5">
-        <span className="grid size-9 place-items-center rounded-xl bg-monad text-white">
-          <ShieldCheckIcon width={20} height={20} />
-        </span>
-        <span className="text-lg font-semibold tracking-tight">RepBase</span>
+    <header className="flex items-center justify-between gap-6 py-8">
+      <a href="/" className="text-lg font-medium tracking-wide">
+        REPBASE
       </a>
-      <div className="flex items-center gap-2">
-        <NetworkPill />
+      <nav className="hidden items-center gap-10 text-sm md:flex" aria-label="Sections">
+        <a href="#leaderboard" className="hover:text-mist">
+          Leaderboard
+        </a>
+        <a href="#how-it-works" className="hover:text-mist">
+          How it works
+        </a>
+        {contractLink && (
+          <a href={contractLink} target="_blank" rel="noreferrer" className="hover:text-mist">
+            Contract
+          </a>
+        )}
+      </nav>
+      <div className="flex items-center gap-6">
+        <NetworkStatus />
         <WalletButton onOpen={onOpenWallet} />
       </div>
     </header>

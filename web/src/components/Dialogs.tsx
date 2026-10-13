@@ -14,7 +14,7 @@ const MAX_TEXT_BYTES = 512
 function Actions({ submitLabel, disabled, onCancel }: { submitLabel: string; disabled: boolean; onCancel: () => void }) {
   const { busy } = useTx()
   return (
-    <div className="mt-6 flex justify-end gap-2">
+    <div className="mt-7 flex items-center justify-end gap-6">
       <Button variant="ghost" onClick={onCancel}>
         Cancel
       </Button>
@@ -39,7 +39,7 @@ export function RegisterAgentDialog({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal title="Register an agent" onClose={onClose}>
+    <Modal title="Register an agent." onClose={onClose}>
       <form onSubmit={submit} className="space-y-4">
         <Field label="Agent name">
           <input
@@ -62,7 +62,7 @@ export function RegisterAgentDialog({ onClose }: { onClose: () => void }) {
           />
         </Field>
         {nameTooLong && <p className="text-sm text-rose">That name is too long. Try a shorter one.</p>}
-        <p className="text-xs text-fog">
+        <p className="text-sm text-fog">
           Mints an ERC-721 identity to your wallet. The profile is stored as an ERC-8004 style registration file.
         </p>
         <Actions submitLabel="Register agent" disabled={!trimmedName || nameTooLong} onCancel={onClose} />
@@ -84,7 +84,7 @@ export function AssignTaskDialog({ agent, onClose }: { agent: Agent; onClose: ()
   }
 
   return (
-    <Modal title={`Assign a task to ${agent.name}`} onClose={onClose}>
+    <Modal title={`Assign a task to ${agent.name}.`} onClose={onClose}>
       <form onSubmit={submit} className="space-y-4">
         <Field label="Task">
           <textarea
@@ -98,7 +98,7 @@ export function AssignTaskDialog({ agent, onClose }: { agent: Agent; onClose: ()
           />
         </Field>
         {tooLong && <p className="text-sm text-rose">That task is too long. Please shorten it.</p>}
-        <p className="text-xs text-fog">
+        <p className="text-sm text-fog">
           Once {agent.name} delivers, you rate the result and its reputation updates on-chain.
         </p>
         <Actions submitLabel="Assign task" disabled={!trimmed || tooLong} onCancel={onClose} />
@@ -120,11 +120,11 @@ export function DeliverTaskDialog({ task, agentName, onClose }: { task: Task; ag
   }
 
   return (
-    <Modal title={`Deliver as ${agentName}`} onClose={onClose}>
+    <Modal title={`Deliver as ${agentName}.`} onClose={onClose}>
       <form onSubmit={submit} className="space-y-4">
-        <div className="rounded-lg border border-line bg-ink-950 px-3 py-2.5 text-sm">
-          <p className="text-xs text-fog">Task #{task.id.toString()}</p>
-          <p className="mt-0.5 break-words">{task.description}</p>
+        <div className="border border-line bg-ink-950 px-4 py-3">
+          <p className="eyebrow">Task #{task.id.toString()}</p>
+          <p className="mt-1 break-words">{task.description}</p>
         </div>
         <Field label="Result" hint="short summary or a link">
           <textarea

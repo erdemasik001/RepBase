@@ -4,18 +4,18 @@ import { sameAddress, timeAgo } from '../lib/format'
 import type { Agent, Task } from '../types'
 import { AddressLabel, Panel, Stars } from './ui'
 
-const FEED_LENGTH = 14
+const FEED_LENGTH = 12
 
 const DOT_COLORS: Record<Activity['kind'], string> = {
   registered: 'bg-monad',
   assigned: 'bg-amber',
-  delivered: 'bg-monad-soft',
+  delivered: 'bg-sky',
   rated: 'bg-mint',
 }
 
 function Line({ item, me }: { item: Activity; me?: string }) {
   const actor = <AddressLabel address={item.actor} you={sameAddress(item.actor, me)} />
-  const agent = <span className="font-semibold text-snow">{item.agentName}</span>
+  const agent = <span className="font-bold text-snow">{item.agentName}</span>
 
   switch (item.kind) {
     case 'registered':
@@ -49,20 +49,20 @@ export function ActivityFeed({ agents, tasks, me, now }: ActivityFeedProps) {
   return (
     <Panel title="Live activity">
       {items.length === 0 ? (
-        <p className="text-sm text-fog">On-chain activity shows up here as it happens.</p>
+        <p className="text-fog">On-chain activity shows up here as it happens.</p>
       ) : (
-        <ol className="space-y-3.5">
+        <ol className="space-y-4">
           {items.map((item) => (
-            <li key={item.key} className="flex animate-rise gap-3 text-sm">
-              <span className={`mt-1.5 size-2 shrink-0 rounded-full ${DOT_COLORS[item.kind]}`} />
+            <li key={item.key} className="flex animate-rise gap-3">
+              <span className={`mt-2 size-1.5 shrink-0 rounded-full ${DOT_COLORS[item.kind]}`} />
               <div className="min-w-0 flex-1">
-                <p className="text-mist">
+                <p className="text-[15px] leading-snug text-mist">
                   <Line item={item} me={me} />
                 </p>
                 {item.kind === 'assigned' && item.task && (
-                  <p className="mt-0.5 truncate text-xs text-fog">“{item.task.description}”</p>
+                  <p className="mt-1 truncate text-sm text-fog">“{item.task.description}”</p>
                 )}
-                <p className="mt-0.5 text-xs text-fog">{timeAgo(item.timestamp, now)}</p>
+                <p className="mt-1 font-mono text-xs text-fog">{timeAgo(item.timestamp, now)}</p>
               </div>
             </li>
           ))}

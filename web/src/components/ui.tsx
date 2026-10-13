@@ -5,14 +5,20 @@ import { shortAddress } from '../lib/format'
 import { CloseIcon, StarIcon } from './icons'
 
 const BUTTON_VARIANTS = {
-  primary: 'bg-monad text-white hover:bg-monad-soft hover:text-ink-950',
-  secondary: 'border border-line bg-ink-800 text-snow hover:bg-ink-700',
-  ghost: 'text-fog hover:text-snow hover:bg-ink-800',
+  primary: 'bg-chrome text-ink-950 hover:brightness-110',
+  secondary: 'border border-white/25 text-snow hover:bg-white/10',
+  ghost: 'text-mist hover:text-snow',
+}
+
+const BUTTON_SIZES = {
+  sm: 'h-9 px-5 text-sm',
+  md: 'h-11 px-7 text-sm',
+  lg: 'h-14 px-10 text-base',
 }
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof BUTTON_VARIANTS
-  size?: 'sm' | 'md'
+  size?: keyof typeof BUTTON_SIZES
 }
 
 export function Button({ variant = 'secondary', size = 'md', className, type = 'button', ...props }: ButtonProps) {
@@ -20,10 +26,10 @@ export function Button({ variant = 'secondary', size = 'md', className, type = '
     <button
       type={type}
       className={cx(
-        'inline-flex items-center justify-center gap-1.5 rounded-lg font-medium whitespace-nowrap transition-colors',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-monad-soft',
-        'disabled:cursor-not-allowed disabled:opacity-45',
-        size === 'sm' ? 'h-8 px-3 text-xs' : 'h-10 px-4 text-sm',
+        'inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition',
+        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-snow',
+        'disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:brightness-100',
+        BUTTON_SIZES[size],
         BUTTON_VARIANTS[variant],
         className,
       )}
@@ -34,9 +40,9 @@ export function Button({ variant = 'secondary', size = 'md', className, type = '
 
 export function Panel({ title, aside, children }: { title: string; aside?: ReactNode; children: ReactNode }) {
   return (
-    <section className="rounded-2xl border border-line bg-ink-900/80 p-5">
-      <header className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-sm font-semibold tracking-wide text-mist uppercase">{title}</h2>
+    <section className="bg-ink-900 p-6">
+      <header className="mb-5 flex items-center justify-between gap-3">
+        <h2 className="eyebrow">{title}</h2>
         {aside}
       </header>
       {children}
@@ -55,7 +61,7 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
 
   return (
     <div
-      className="fixed inset-0 z-40 grid place-items-center overflow-y-auto bg-black/65 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-40 grid place-items-center overflow-y-auto bg-black/75 p-4 backdrop-blur-sm"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -64,17 +70,17 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="w-full max-w-md animate-rise rounded-2xl border border-line bg-ink-900 p-6 shadow-2xl shadow-black/60"
+        className="w-full max-w-md animate-rise border border-line bg-ink-900 p-7 shadow-2xl shadow-black"
       >
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold">{title}</h2>
+        <div className="mb-6 flex items-start justify-between gap-4">
+          <h2 className="font-display text-2xl leading-tight font-extrabold text-chrome">{title}</h2>
           <button
             type="button"
             aria-label="Close"
             onClick={onClose}
-            className="-m-1 rounded-md p-1 text-fog transition-colors hover:bg-ink-800 hover:text-snow"
+            className="-m-1 p-1 text-fog transition-colors hover:text-snow"
           >
-            <CloseIcon />
+            <CloseIcon width={18} height={18} />
           </button>
         </div>
         {children}
@@ -86,9 +92,9 @@ export function Modal({ title, onClose, children }: { title: string; onClose: ()
 export function Field({ label, hint, children }: { label: string; hint?: ReactNode; children: ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 flex items-baseline justify-between gap-2 text-xs font-medium text-mist">
-        {label}
-        {hint && <span className="font-normal text-fog">{hint}</span>}
+      <span className="mb-2 flex items-baseline justify-between gap-2">
+        <span className="eyebrow">{label}</span>
+        {hint && <span className="text-xs text-fog">{hint}</span>}
       </span>
       {children}
     </label>
@@ -135,7 +141,7 @@ export function StarPicker({ value, onChange }: { value: number; onChange: (valu
           aria-label={`${star} star${star > 1 ? 's' : ''}`}
           onClick={() => onChange(star)}
           className={cx(
-            'rounded p-0.5 transition-transform hover:scale-110',
+            'p-0.5 transition-transform hover:scale-110',
             star <= value ? 'text-amber' : 'text-ink-600 hover:text-fog',
           )}
         >

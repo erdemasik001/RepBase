@@ -163,7 +163,7 @@ With the reference agent running, one MetaMask account is enough:
 2. Start the agent (`pnpm start` in `agent/`). It registers itself and shows up at score 50.0.
 3. Connect MetaMask and click **Assign task** on the agent. The toast shows the confirmation time.
 4. The agent delivers on its own. The task moves to **Your queue** as "Rate …".
-5. Give 5 stars. The score ring animates to 62.5 and the feed records the rating.
+5. Give 5 stars. The score jumps to 62.5 and the feed records the rating.
 6. Assign a second task and give 1 star. The score drops to 54.0.
 7. Open the contract on MonadVision to show the verified source and the transactions.
 

@@ -3,6 +3,7 @@ import { type Connector, useAccount, useConnect, useDisconnect, useSwitchChain }
 import { chain, devAccounts } from '../config'
 import { describeError } from '../lib/errors'
 import { shortAddress } from '../lib/format'
+import { ChevronRightIcon } from './icons'
 import { Button, Modal } from './ui'
 
 type WalletOption = { connector: Connector; label: string; detail?: string }
@@ -37,16 +38,22 @@ export function WalletButton({ onOpen }: { onOpen: () => void }) {
 
   if (!isConnected || !address) {
     return (
-      <Button variant="primary" onClick={onOpen}>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="inline-flex items-center gap-2 text-base font-medium whitespace-nowrap hover:text-mist"
+      >
         Connect wallet
-      </Button>
+        <ChevronRightIcon />
+      </button>
     )
   }
 
   if (chainId !== chain.id) {
     return (
       <Button
-        className="border-amber/40 text-amber"
+        size="sm"
+        className="border-amber/50 text-amber"
         disabled={isPending}
         onClick={() => switchChain({ chainId: chain.id })}
       >
@@ -56,8 +63,8 @@ export function WalletButton({ onOpen }: { onOpen: () => void }) {
   }
 
   return (
-    <Button onClick={onOpen} className="font-mono">
-      <span className="size-2 rounded-full bg-mint" />
+    <Button size="sm" onClick={onOpen} className="font-mono">
+      <span className="size-1.5 rounded-full bg-mint" />
       {shortAddress(address)}
     </Button>
   )
@@ -86,12 +93,12 @@ export function WalletModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal title={isConnected ? 'Wallet' : 'Connect a wallet'} onClose={onClose}>
+    <Modal title={isConnected ? 'Wallet.' : 'Connect a wallet.'} onClose={onClose}>
       {isConnected && address && (
-        <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-line bg-ink-950 px-3 py-2.5">
+        <div className="mb-5 flex items-center justify-between gap-3 border border-line bg-ink-950 px-4 py-3">
           <div className="min-w-0">
-            <p className="text-xs text-fog">Connected</p>
-            <p className="truncate font-mono text-sm">{address}</p>
+            <p className="eyebrow">Connected</p>
+            <p className="mt-1 truncate font-mono text-sm">{address}</p>
           </div>
           <Button
             size="sm"
@@ -106,14 +113,9 @@ export function WalletModal({ onClose }: { onClose: () => void }) {
       )}
 
       {options.length === 0 ? (
-        <p className="text-sm text-mist">
+        <p className="text-mist">
           No browser wallet was found.{' '}
-          <a
-            href="https://metamask.io/download/"
-            target="_blank"
-            rel="noreferrer"
-            className="text-monad-soft underline"
-          >
+          <a href="https://metamask.io/download/" target="_blank" rel="noreferrer" className="text-snow underline">
             Install MetaMask
           </a>{' '}
           and reload the page.
@@ -128,7 +130,7 @@ export function WalletModal({ onClose }: { onClose: () => void }) {
                   type="button"
                   disabled={active || pendingUid !== null}
                   onClick={() => connect(option)}
-                  className="flex w-full items-center justify-between gap-3 rounded-lg border border-line bg-ink-800 px-3 py-3 text-left text-sm transition-colors hover:bg-ink-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex w-full items-center justify-between gap-3 border border-line px-4 py-3.5 text-left transition-colors hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <span className="font-medium">{option.label}</span>
                   <span className="font-mono text-xs text-fog">
@@ -141,8 +143,8 @@ export function WalletModal({ onClose }: { onClose: () => void }) {
         </ul>
       )}
 
-      {error && <p className="mt-3 text-sm text-rose">{error}</p>}
-      <p className="mt-4 text-xs text-fog">RepBase runs on {chain.name}. You will be asked to switch if needed.</p>
+      {error && <p className="mt-4 text-sm text-rose">{error}</p>}
+      <p className="mt-5 text-sm text-fog">RepBase runs on {chain.name}. You will be asked to switch if needed.</p>
     </Modal>
   )
 }

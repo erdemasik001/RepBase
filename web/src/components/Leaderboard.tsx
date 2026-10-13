@@ -5,47 +5,30 @@ import { cx } from '../lib/classes'
 import { formatScore, isHttpUrl, sameAddress, scoreToNumber, timeAgo } from '../lib/format'
 import { tierFor } from '../lib/reputation'
 import { type Agent, type Task, TaskStatus } from '../types'
-import { ChevronDownIcon, PlusIcon } from './icons'
+import { ChevronDownIcon } from './icons'
+import { Orb } from './Shapes'
 import { AddressLabel, Button, Stars } from './ui'
 
-const RING_RADIUS = 27
-const RING_LENGTH = 2 * Math.PI * RING_RADIUS
-
-function ScoreRing({ score, color }: { score: number; color: string }) {
+function Score({ score, color }: { score: number; color: string }) {
   const delta = useScoreDelta(score)
 
   return (
-    <div className="relative shrink-0 text-center">
-      <svg width="68" height="68" viewBox="0 0 68 68" role="img" aria-label={`Reputation score ${formatScore(score)}`}>
-        <circle cx="34" cy="34" r={RING_RADIUS} fill="none" stroke="var(--color-ink-700)" strokeWidth="5" />
-        <circle
-          cx="34"
-          cy="34"
-          r={RING_RADIUS}
-          fill="none"
-          stroke={color}
-          strokeWidth="5"
-          strokeLinecap="round"
-          strokeDasharray={RING_LENGTH}
-          strokeDashoffset={RING_LENGTH * (1 - score / 100)}
-          transform="rotate(-90 34 34)"
-          style={{ transition: 'stroke-dashoffset 0.7s ease, stroke 0.7s ease' }}
+    <div className="relative shrink-0 text-right" role="img" aria-label={`Reputation score ${formatScore(score)}`}>
+      <p className="eyebrow">Reputation</p>
+      <p className="mt-1 font-display text-5xl leading-none font-black tabular-nums text-chrome sm:text-6xl">
+        {formatScore(score)}
+      </p>
+      <div className="mt-2 ml-auto h-0.5 w-24 bg-ink-700 sm:w-32">
+        <div
+          className="h-full"
+          style={{ width: `${score}%`, background: color, transition: 'width 0.7s ease, background 0.7s ease' }}
         />
-        <text
-          x="34"
-          y="35"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          className="fill-snow font-mono text-[15px] font-semibold"
-        >
-          {formatScore(score)}
-        </text>
-      </svg>
+      </div>
       {delta !== null && (
         <span
           className={cx(
-            'absolute -bottom-3 left-1/2 -translate-x-1/2 animate-rise rounded-full px-1.5 py-0.5 font-mono text-[11px] font-semibold whitespace-nowrap',
-            delta > 0 ? 'bg-mint/15 text-mint' : 'bg-rose/15 text-rose',
+            'absolute top-full right-0 mt-2 animate-rise font-mono text-sm font-medium whitespace-nowrap',
+            delta > 0 ? 'text-mint' : 'text-rose',
           )}
         >
           {delta > 0 ? '▲ +' : '▼ −'}
@@ -56,29 +39,16 @@ function ScoreRing({ score, color }: { score: number; color: string }) {
   )
 }
 
-function Avatar({ agent }: { agent: Agent }) {
-  const hue = (Number(agent.id) * 67 + 250) % 360
-  return (
-    <span
-      className="grid size-11 shrink-0 place-items-center rounded-xl text-base font-semibold text-white"
-      style={{ background: `linear-gradient(135deg, hsl(${hue} 70% 58%), hsl(${(hue + 50) % 360} 65% 40%))` }}
-      aria-hidden="true"
-    >
-      {agent.name.trim().charAt(0).toUpperCase()}
-    </span>
-  )
-}
-
 const STATUS_LABELS = {
-  [TaskStatus.Open]: { label: 'Open', className: 'bg-amber/15 text-amber' },
-  [TaskStatus.Completed]: { label: 'Delivered', className: 'bg-monad/20 text-monad-soft' },
-  [TaskStatus.Rated]: { label: 'Rated', className: 'bg-mint/15 text-mint' },
+  [TaskStatus.Open]: { label: 'Open', className: 'text-amber' },
+  [TaskStatus.Completed]: { label: 'Delivered', className: 'text-monad-soft' },
+  [TaskStatus.Rated]: { label: 'Rated', className: 'text-mint' },
 } as const
 
 export function TaskResult({ result }: { result: string }) {
   if (isHttpUrl(result)) {
     return (
-      <a href={result} target="_blank" rel="noreferrer" className="break-all text-monad-soft underline">
+      <a href={result} target="_blank" rel="noreferrer" className="break-all text-snow underline">
         {result}
       </a>
     )
@@ -88,33 +58,30 @@ export function TaskResult({ result }: { result: string }) {
 
 function TaskHistory({ tasks, me, now }: { tasks: Task[]; me?: string; now: number }) {
   if (tasks.length === 0) {
-    return <p className="mt-4 border-t border-line pt-4 text-sm text-fog">No tasks yet. Be the first to hire this agent.</p>
+    return <p className="mt-6 border-t border-line pt-5 text-fog">No tasks yet. Be the first to hire this agent.</p>
   }
 
   return (
-    <ul className="mt-4 space-y-3 border-t border-line pt-4">
+    <ul className="mt-6 divide-y divide-line border-t border-line">
       {tasks.map((task) => {
         const status = STATUS_LABELS[task.status as keyof typeof STATUS_LABELS]
         return (
-          <li key={task.id} className="text-sm">
-            <div className="flex items-start gap-2">
-              <span className={cx('mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[11px] font-semibold', status.className)}>
-                {status.label}
-              </span>
-              <p className="min-w-0 break-words text-snow">{task.description}</p>
-            </div>
+          <li key={task.id} className="py-4">
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tracking-[0.14em] uppercase">
+              <span className={status.className}>{status.label}</span>
+              <span className="text-fog">Task #{task.id.toString()}</span>
+              {task.status === TaskStatus.Rated && <Stars value={task.rating} size={12} />}
+            </p>
+            <p className="mt-2 break-words text-snow">{task.description}</p>
             {task.result && (
-              <p className="mt-1 pl-1 text-mist">
+              <p className="mt-1 text-sm text-mist">
                 <span className="text-fog">Result: </span>
                 <TaskResult result={task.result} />
               </p>
             )}
-            <p className="mt-1 flex flex-wrap items-center gap-x-2 pl-1 text-xs text-fog">
-              <span>
-                Task #{task.id.toString()} from <AddressLabel address={task.client} you={sameAddress(task.client, me)} />
-              </span>
-              <span>· {timeAgo(Number(task.createdAt), now)}</span>
-              {task.status === TaskStatus.Rated && <Stars value={task.rating} size={12} />}
+            <p className="mt-2 text-sm text-fog">
+              From <AddressLabel address={task.client} you={sameAddress(task.client, me)} /> ·{' '}
+              {timeAgo(Number(task.createdAt), now)}
             </p>
           </li>
         )
@@ -140,59 +107,61 @@ function AgentCard({ agent, rank, tasks, me, now, onAssign }: AgentCardProps) {
   const description = describeAgent(agent.agentURI)
 
   return (
-    <li className="animate-rise rounded-2xl border border-line bg-ink-900/80 p-4 transition-colors hover:border-white/15 sm:p-5">
-      <div className="flex items-center gap-3 sm:gap-4">
-        <span className="hidden w-6 shrink-0 text-center font-mono text-sm text-fog sm:block">{rank}</span>
-        <Avatar agent={agent} />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <h3 className="truncate text-base font-semibold">{agent.name}</h3>
-            <span
-              className="rounded-full border px-2 py-0.5 text-[11px] font-semibold"
-              style={{ color: tier.color, borderColor: `color-mix(in srgb, ${tier.color} 40%, transparent)` }}
-            >
+    <li className="animate-rise bg-ink-900 p-6 sm:p-8">
+      <div className="flex items-start justify-between gap-6">
+        <div className="min-w-0">
+          <p className="eyebrow flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>No. {rank.toString().padStart(2, '0')}</span>
+            <span className="inline-flex items-center gap-1.5" style={{ color: tier.color }}>
+              <span className="size-1.5 rounded-full bg-current" />
               {tier.label}
             </span>
-            {isMine && (
-              <span className="rounded-full bg-monad/20 px-2 py-0.5 text-[11px] font-semibold text-monad-soft">
-                Your agent
-              </span>
-            )}
-          </div>
-          {description && <p className="mt-0.5 truncate text-sm text-mist">{description}</p>}
-          <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-fog">
-            <span>
-              ID <span className="font-mono">#{agent.id.toString()}</span>
-            </span>
-            <span>
-              Owner <AddressLabel address={agent.owner} you={isMine} />
-            </span>
-            <span>
-              {agent.tasksCompleted}/{agent.tasksReceived} delivered
-            </span>
-            <span>
-              {agent.feedbackCount} rating{agent.feedbackCount === 1 ? '' : 's'}
-            </span>
+            {isMine && <span className="text-monad-soft">Your agent</span>}
           </p>
+          <div className="mt-4 flex items-center gap-4">
+            <Orb seed={Number(agent.id)} className="size-10 shrink-0 sm:size-12" />
+            <h3 className="truncate font-display text-3xl leading-tight font-extrabold text-chrome sm:text-4xl">
+              {agent.name}
+            </h3>
+          </div>
         </div>
-        <ScoreRing score={score} color={tier.color} />
+        <Score score={score} color={tier.color} />
       </div>
 
-      <div className="mt-4 flex items-center gap-2 sm:pl-10">
+      {description && <p className="mt-5 max-w-xl text-lg leading-snug text-mist">{description}</p>}
+      <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-fog">
+        <span>
+          ID <span className="font-mono">#{agent.id.toString()}</span>
+        </span>
+        <span>
+          Owner <AddressLabel address={agent.owner} you={isMine} />
+        </span>
+        <span>
+          {agent.tasksCompleted}/{agent.tasksReceived} delivered
+        </span>
+        <span>
+          {agent.feedbackCount} rating{agent.feedbackCount === 1 ? '' : 's'}
+        </span>
+      </p>
+
+      <div className="mt-6 flex items-center gap-7">
         <Button
-          size="sm"
           variant="primary"
           disabled={isMine}
           title={isMine ? 'Owners cannot hire their own agent' : undefined}
           onClick={() => onAssign(agent)}
         >
-          <PlusIcon width={14} height={14} />
           Assign task
         </Button>
-        <Button size="sm" variant="ghost" aria-expanded={expanded} onClick={() => setExpanded((value) => !value)}>
+        <button
+          type="button"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+          className="inline-flex items-center gap-1.5 text-sm font-medium hover:text-mist"
+        >
           History ({tasks.length})
           <ChevronDownIcon width={14} height={14} className={cx('transition-transform', expanded && 'rotate-180')} />
-        </Button>
+        </button>
       </div>
 
       {expanded && <TaskHistory tasks={tasks} me={me} now={now} />}
@@ -228,7 +197,7 @@ export function Leaderboard({ agents, tasks, me, now, onAssign }: LeaderboardPro
   }, [tasks])
 
   return (
-    <ol className="space-y-3">
+    <ol className="space-y-5">
       {ranked.map((agent, index) => (
         <AgentCard
           key={agent.id}

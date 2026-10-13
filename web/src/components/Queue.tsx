@@ -12,14 +12,14 @@ function RateTask({ task, agentName }: { task: Task; agentName: string }) {
   const { busy } = useTx()
 
   return (
-    <li className="rounded-xl border border-line bg-ink-950/60 p-3">
-      <p className="text-xs font-semibold text-mint">Rate {agentName}</p>
-      <p className="mt-1 text-sm break-words">{task.description}</p>
+    <li className="py-5 first:pt-0 last:pb-0">
+      <p className="text-xs tracking-[0.14em] text-mint uppercase">Rate {agentName}</p>
+      <p className="mt-2 break-words">{task.description}</p>
       <p className="mt-1 text-sm text-mist">
         <span className="text-fog">Result: </span>
         <TaskResult result={task.result} />
       </p>
-      <div className="mt-3 flex items-center justify-between gap-3">
+      <div className="mt-4 flex items-center justify-between gap-3">
         <StarPicker value={rating} onChange={setRating} />
         <Button
           size="sm"
@@ -60,19 +60,19 @@ export function Queue({ agents, tasks, me, onDeliver }: QueueProps) {
       title="Your queue"
       aside={
         actionable > 0 && (
-          <span className="rounded-full bg-monad px-2 py-0.5 text-xs font-semibold text-white">{actionable}</span>
+          <span className="bg-chrome px-2 py-0.5 font-mono text-xs font-medium text-ink-950">{actionable}</span>
         )
       }
     >
       {actionable + waiting.length === 0 ? (
-        <p className="text-sm text-fog">Nothing is waiting on you. Assign a task to an agent or register your own.</p>
+        <p className="text-fog">Nothing is waiting on you. Assign a task to an agent or register your own.</p>
       ) : (
-        <ul className="space-y-2.5">
+        <ul className="divide-y divide-line">
           {toDeliver.map((task) => (
-            <li key={task.id.toString()} className="rounded-xl border border-line bg-ink-950/60 p-3">
-              <p className="text-xs font-semibold text-amber">New task for {nameOf(task)}</p>
-              <p className="mt-1 text-sm break-words">{task.description}</p>
-              <div className="mt-3 flex justify-end">
+            <li key={task.id.toString()} className="py-5 first:pt-0 last:pb-0">
+              <p className="text-xs tracking-[0.14em] text-amber uppercase">New task for {nameOf(task)}</p>
+              <p className="mt-2 break-words">{task.description}</p>
+              <div className="mt-4 flex justify-end">
                 <Button size="sm" variant="primary" disabled={busy} onClick={() => onDeliver(task)}>
                   Deliver result
                 </Button>
@@ -83,9 +83,9 @@ export function Queue({ agents, tasks, me, onDeliver }: QueueProps) {
             <RateTask key={task.id.toString()} task={task} agentName={nameOf(task)} />
           ))}
           {waiting.map((task) => (
-            <li key={task.id.toString()} className="rounded-xl border border-dashed border-line p-3">
-              <p className="text-xs font-semibold text-fog">Waiting for {nameOf(task)} to deliver</p>
-              <p className="mt-1 text-sm break-words text-mist">{task.description}</p>
+            <li key={task.id.toString()} className="py-5 first:pt-0 last:pb-0">
+              <p className="text-xs tracking-[0.14em] text-fog uppercase">Waiting for {nameOf(task)} to deliver</p>
+              <p className="mt-2 break-words text-mist">{task.description}</p>
             </li>
           ))}
         </ul>
