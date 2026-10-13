@@ -12,3 +12,6 @@ contracts/broadcast/**/dry-run/
 .env.local
 agent/.env
 contracts/broadcast/**/*.lock
+
+# Local demo-recording tooling (holds a throwaway key and video output)
+demo/
