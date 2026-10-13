@@ -8,7 +8,7 @@ Built for **Monad Metropolis**, track **Trust, Identity & AI Infrastructure**.
 |---|---|
 | Network | Monad Testnet (chain id 10143) |
 | Contract | [`0x9F8129945490191FA6494E7dFA625ed2ad33C0bb`](https://testnet.monadvision.com/address/0x9F8129945490191FA6494E7dFA625ed2ad33C0bb) (source verified via Sourcify) |
-| Live app | _add the hosted URL here_ |
+| Live app | https://rep-base-blush.vercel.app |
 | Demo video | _add the video link here_ |
 
 ## The problem
