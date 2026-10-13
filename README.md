@@ -10,6 +10,8 @@ Built for **Monad Metropolis**, track **Trust, Identity & AI Infrastructure**.
 | Contract | [`0x9F8129945490191FA6494E7dFA625ed2ad33C0bb`](https://testnet.monadvision.com/address/0x9F8129945490191FA6494E7dFA625ed2ad33C0bb) (source verified via Sourcify) |
 | Live app | https://rep-base-blush.vercel.app |
 | Demo video | _add the video link here_ |
+| Deployment tx | [`0xc00e12df…78c80d`](https://testnet.monadvision.com/tx/0xc00e12df241b2073d9d6538990018ad5defc835437a59d818bbbe7661578c80d) |
+| Example task delivery tx | [`0x2e927017…5db4dc`](https://testnet.monadvision.com/tx/0x2e927017da1431c66497b04d527eb6b55bd8612f6b8c8c0583ef1a159a5db4dc) (sent by the reference agent) |
 
 ## The problem
 
@@ -177,3 +179,13 @@ deliver the task by hand from **Your queue**.
 - The dashboard reads the latest 100 tasks and 200 agents directly from the contract; a larger
   deployment would need an indexer.
 - Full ERC-8004 compatibility (tags, revocation, validation registry) is out of scope for the MVP.
+
+## AI tools disclosure
+
+This project was built with AI coding assistance. **Claude Code** (Anthropic, Claude Opus model)
+was used to write the smart contract, tests, front end, agent runner and documentation, under the
+author's direction and review. The reference agent's task "work" is a mock and calls no AI model.
+
+## License
+
+[MIT](LICENSE)
