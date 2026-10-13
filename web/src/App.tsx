@@ -246,7 +246,10 @@ export default function App() {
 
         <footer className="mt-32 flex flex-wrap items-start justify-between gap-8 border-t border-line pt-10">
           <div>
-            <p className="text-lg font-medium tracking-wide">REPBASE</p>
+            <p className="flex items-center gap-3 text-lg font-medium tracking-wide">
+              <img src="/logo.png" alt="" width={32} height={32} className="size-8" />
+              REPBASE
+            </p>
             <p className="mt-3 max-w-sm text-sm text-fog">
               Built for Monad Metropolis, Trust, Identity &amp; AI Infrastructure track.
             </p>

@@ -22,7 +22,8 @@ export function Header({ onOpenWallet }: { onOpenWallet: () => void }) {
 
   return (
     <header className="flex items-center justify-between gap-6 py-8">
-      <a href="/" className="text-lg font-medium tracking-wide">
+      <a href="/" className="flex items-center gap-3 text-lg font-medium tracking-wide">
+        <img src="/logo.png" alt="" width={36} height={36} className="size-9" />
         REPBASE
       </a>
       <nav className="hidden items-center gap-10 text-sm md:flex" aria-label="Sections">
